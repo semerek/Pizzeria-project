@@ -52,87 +52,127 @@
     menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
   };
 
-  class Product{ // stworzenie KLASY o nazwie PRODUCT
-    constructor(id, data){
+  class Product { // stworzenie KLASY o nazwie PRODUCT
+    constructor(id, data) {
       const thisProduct = this;
 
       thisProduct.id = id;
       thisProduct.data = data;
 
       thisProduct.renderInMenu();
+      thisProduct.getElements();
       thisProduct.initAccordion();
+      thisProduct.initOrderForm();
+      thisProduct.processOrder();
 
       console.log('new Product:', thisProduct);
     }
-    renderInMenu(){
+    renderInMenu() {
       const thisProduct = this;
       /* generate HTML of each product based on template*/
       const generatedHTML = templates.menuProduct(thisProduct.data);
-      /* create element DOM using utilis.createElementfromHTML (basen on created code above)*/ 
+      /* create element DOM using utilis.createElementfromHTML (basen on created code above)*/
       thisProduct.element = utils.createDOMFromHTML(generatedHTML);
-      /* find menu container */ 
+      /* find menu container */
       const menuContainer = document.querySelector(select.containerOf.menu);
-      /* add element to the menu (put the elemnt dom into the menu container) */ 
+      /* add element to the menu (put the elemnt dom into the menu container) */
       menuContainer.appendChild(thisProduct.element);
     }
+    getElements() { //wszystkie elementy w kontenerze produktu
+      const thisProduct = this;
 
-    initAccordion(){
+      thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
+      thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
+      thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
+      thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
+      thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+    }
+
+    initAccordion() {
       const thisProduct = this;
 
       /* find the clickable trigger (the element that should react to clicking) */
-      const trigger = thisProduct.element.querySelector(select.menuProduct.clickable)
+      const trigger = thisProduct.element.querySelector(select.menuProduct.clickable);
 
-    /* START: click event listener to trigger */
-      trigger.addEventListener('click', function(){ // function(event) czy function()?
-      console.log('clicked')
-    
-      /* prevent default action for event */
-      event.preventDefault();
+      /* START: click event listener to trigger */
+      trigger.addEventListener('click', function () { // function(event) czy function()?
+        console.log('clicked');
 
-      /* toggle active class on element of thisProduct */
-      thisProduct.element.classList.toggle(classNames.menuProduct.wrapperActive);
+        /* prevent default action for event */
+        event.preventDefault();
 
-      /* find all active products */
-      const activeProducts = document.querySelectorAll(select.all.menuProductsActive);
+        /* toggle active class on element of thisProduct */
+        thisProduct.element.classList.toggle(classNames.menuProduct.wrapperActive);
 
-      /* START LOOP: for each active product */
-      for (let activeProduct of activeProducts) {
-        /* START: if the active product isn't the element of thisProduct */
-        if (activeProduct !== thisProduct.element) {
-          /* remove class active for the active product */
-          activeProduct.classList.remove(classNames.menuProduct.wrapperActive);
-          console.log('active product:', activeProduct)
-        /* END: if the active product isn't the element of thisProduct */
+        /* find all active products */
+        const activeProducts = document.querySelectorAll(select.all.menuProductsActive);
+
+        /* START LOOP: for each active product */
+        for (let activeProduct of activeProducts) {
+          /* START: if the active product isn't the element of thisProduct */
+          if (activeProduct !== thisProduct.element) {
+            /* remove class active for the active product */
+            activeProduct.classList.remove(classNames.menuProduct.wrapperActive);
+            console.log('active product:', activeProduct);
+            /* END: if the active product isn't the element of thisProduct */
+          }
+          /* END LOOP: for each active product */
+
         }
-      /* END LOOP: for each active product */
-        
+
+        /* END: click event listener to trigger */
+      });
+
+    }
+
+    initOrderForm() {
+      const thisProduct = this;
+      console.log('initOrderForm: ', thisProduct);
+      thisProduct.form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        thisProduct.processOrder();
+      });
+
+      for (let input of thisProduct.formInputs) {
+        input.addEventListener('change', function () {
+          thisProduct.processOrder();
+        });
       }
 
-    /* END: click event listener to trigger */
-    });
+      thisProduct.cartButton.addEventListener('click', function (event) {
+        event.preventDefault();
+        thisProduct.processOrder();
+      });
 
+    }
+    processOrder() {
+      const thisProduct = this;
+      console.log('processOrder: ', thisProduct);
+
+    }
   }
-  } 
+
+
 
 
   const app = { //metoda OBIEKTU
 
-    initMenu: function(){ // instancja klasy PRODUCT
+    initMenu: function () { // instancja klasy PRODUCT
       const thisApp = this; //this pojedyncza instancja - pozwala na dodawanie właściwości i uruchamianie danej metody
       console.log('thisApp.data', thisApp.data);
 
-      for(let productData in thisApp.data.products) {
+      for (let productData in thisApp.data.products) {
         new Product(productData, thisApp.data.products[productData]);
       }
-    }, 
+    },
 
-    initData: function(){ // INSTANCJA dla każdego PRODUCT
+    initData: function () { // INSTANCJA dla każdego PRODUCT
       const thisApp = this;
 
       thisApp.data = dataSource; //dataSource = informacje o produkcie
     },
 
-    init: function(){
+    init: function () {
       const thisApp = this;
       console.log('*** App starting ***');
       console.log('thisApp:', thisApp);
