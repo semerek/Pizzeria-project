@@ -131,6 +131,7 @@
       thisProduct.form.addEventListener('submit', function (event) {
         event.preventDefault();
         thisProduct.processOrder();
+
       });
 
       for (let input of thisProduct.formInputs) {
@@ -148,6 +149,44 @@
     processOrder() {
       const thisProduct = this;
       console.log('processOrder: ', thisProduct);
+
+      /* set variable price to equal thisProduct.data.price */
+      let variablePrice = thisProduct.data.price;
+      /* define variable params */
+      let params = thisProduct.data.params;
+      /* define variable options */
+      let options = thisProduct.data.options;
+
+      /* read all data from the form (using utils.serializeFormToObject) and save it to const formData */
+      //odczytywanie właściwości z formularza klucza parametru ( atrybut name), opcji (atrybut value)
+      const formData = utils.serializeFormToObject(thisProduct.form);
+      console.log('formData', formData);
+
+
+      /* START LOOP: for each paramId in thisProduct.data.params */
+      for (let paramId in params) {
+        /* save the element in thisProduct.data.params with key paramId as const param */
+        const param = thisProduct.data.params[paramId];
+        /* START LOOP: for each optionId in param.options */
+        for (let optionId in options) {
+          /* save the element in param.options with key optionId as const option */
+          const option = param.options[optionId]; // dlaczego nie thisProduct.param.options..?
+          /* START IF: if option is selected and option is not default */
+          const optionSelected = formData.hasOwnProperty(paramId) && formData[paramId].indexOf(optionId) > -1;
+          if (optionSelected && !option.default) { // opcja wybrana nie jest opcją domyślną
+            variablePrice += option.price; //+=	price = price + option.price
+
+            /* END IF: if option is selected and option is not default */
+            /* START ELSE IF: if option is not selected and option is default */
+          } else if (!optionSelected && option.default) { //opcja niewybrana jest opcją domyślną
+            /* deduct price of option from price */
+            variablePrice -= option.price; //-=	price = price - option.price //
+            /* END ELSE IF: if option is not selected and option is default */
+          }
+        }
+      }
+      /* set the contents of thisProduct.priceElem to be the value of variable price */
+      thisProduct.priceElem.innerHTML = variablePrice;
 
     }
   }
