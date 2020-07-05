@@ -183,7 +183,19 @@
             variablePrice -= option.price; //-=	price = price - option.price //
             /* END ELSE IF: if option is not selected and option is default */
           }
+          /*create const = all found elements in thisProduct.imageWrapper*/
+          /*wszystkie obrazki składają się z kropki, klucza parametru, myśnika, klucza opcji.. dlaczego?*/
+          const images =  thisProduct.imageWrapper.querySelectorAll('.' + [paramId] + '-' + [optionId]);
+          console.log('images', images);
+        for (let image in images){
+           /*start if/else when element was cliked*/
+          if(optionSelected) {
+              image.classList.add(classNames.menuProduct.imageVisible);
+          } else{
+              image.classList.remove(classNames.menuProduct.imageVisible);
+          }
         }
+      }
       }
       /* set the contents of thisProduct.priceElem to be the value of variable price */
       thisProduct.priceElem.innerHTML = variablePrice;
