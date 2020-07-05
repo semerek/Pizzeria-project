@@ -86,6 +86,7 @@
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper)
     }
 
     initAccordion() {
@@ -168,7 +169,7 @@
         /* save the element in thisProduct.data.params with key paramId as const param */
         const param = thisProduct.data.params[paramId];
         /* START LOOP: for each optionId in param.options */
-        for (let optionId in options) {
+        for (let optionId in param.options) {
           /* save the element in param.options with key optionId as const option */
           const option = param.options[optionId]; // dlaczego nie thisProduct.param.options..?
           /* START IF: if option is selected and option is not default */
@@ -185,17 +186,23 @@
           }
           /*create const = all found elements in thisProduct.imageWrapper*/
           /*wszystkie obrazki składają się z kropki, klucza parametru, myśnika, klucza opcji.. dlaczego?*/
-          const images =  thisProduct.imageWrapper.querySelectorAll('.' + [paramId] + '-' + [optionId]);
+          const images =  thisProduct.imageWrapper.querySelectorAll('.' + [paramId]+ '-' + [optionId]);
           console.log('images', images);
-        for (let image in images){
-           /*start if/else when element was cliked*/
           if(optionSelected) {
+            for (let image of images){
               image.classList.add(classNames.menuProduct.imageVisible);
-          } else{
+            }
+          } else {
+            for (let image of images){
               image.classList.remove(classNames.menuProduct.imageVisible);
+            }
           }
+          
+            
+           }	        
+
+
         }
-      }
       }
       /* set the contents of thisProduct.priceElem to be the value of variable price */
       thisProduct.priceElem.innerHTML = variablePrice;
