@@ -86,7 +86,7 @@
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
-      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper)
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
     }
 
     initAccordion() {
@@ -147,6 +147,7 @@
       });
 
     }
+
     processOrder() {
       const thisProduct = this;
       console.log('processOrder: ', thisProduct);
@@ -155,8 +156,6 @@
       let variablePrice = thisProduct.data.price;
       /* define variable params */
       let params = thisProduct.data.params;
-      /* define variable options */
-      let options = thisProduct.data.options;
 
       /* read all data from the form (using utils.serializeFormToObject) and save it to const formData */
       //odczytywanie właściwości z formularza klucza parametru ( atrybut name), opcji (atrybut value)
@@ -186,32 +185,22 @@
           }
           /*create const = all found elements in thisProduct.imageWrapper*/
           /*wszystkie obrazki składają się z kropki, klucza parametru, myśnika, klucza opcji.. dlaczego?*/
-          const images =  thisProduct.imageWrapper.querySelectorAll('.' + [paramId]+ '-' + [optionId]);
-          console.log('images', images);
-          if(optionSelected) {
-            for (let image of images){
+          const images = thisProduct.imageWrapper.querySelectorAll('.' + [paramId] + '-' + [optionId]);
+          if (optionSelected) {
+            for (let image of images) {
               image.classList.add(classNames.menuProduct.imageVisible);
-            }
+            } /* END LOOP for each image*/
           } else {
-            for (let image of images){
+            for (let image of images) {
               image.classList.remove(classNames.menuProduct.imageVisible);
             }
           }
-          
-            
-           }	        
-
-
         }
       }
       /* set the contents of thisProduct.priceElem to be the value of variable price */
       thisProduct.priceElem.innerHTML = variablePrice;
-
     }
   }
-
-
-
 
   const app = { //metoda OBIEKTU
 
@@ -241,6 +230,7 @@
       thisApp.initMenu();
     },
   };
+
 
   app.init();
 }
