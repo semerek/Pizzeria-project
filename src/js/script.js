@@ -63,9 +63,11 @@
       thisProduct.getElements();
       thisProduct.initAccordion();
       thisProduct.initOrderForm();
+      thisProduct.initAmountWidget();
       thisProduct.processOrder();
 
-      console.log('new Product:', thisProduct);
+
+      //console.log('new Product:', thisProduct);
     }
     renderInMenu() {
       const thisProduct = this;
@@ -87,6 +89,7 @@
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
       thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
+      thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
     }
 
     initAccordion() {
@@ -97,7 +100,7 @@
 
       /* START: click event listener to trigger */
       trigger.addEventListener('click', function () { // function(event) czy function()?
-        console.log('clicked');
+        //console.log('clicked');
 
         /* prevent default action for event */
         event.preventDefault();
@@ -114,7 +117,7 @@
           if (activeProduct !== thisProduct.element) {
             /* remove class active for the active product */
             activeProduct.classList.remove(classNames.menuProduct.wrapperActive);
-            console.log('active product:', activeProduct);
+            //console.log('active product:', activeProduct);
             /* END: if the active product isn't the element of thisProduct */
           }
           /* END LOOP: for each active product */
@@ -150,7 +153,7 @@
 
     processOrder() {
       const thisProduct = this;
-      console.log('processOrder: ', thisProduct);
+      //console.log('processOrder: ', thisProduct);
 
       /* set variable price to equal thisProduct.data.price */
       let variablePrice = thisProduct.data.price;
@@ -160,7 +163,7 @@
       /* read all data from the form (using utils.serializeFormToObject) and save it to const formData */
       //odczytywanie właściwości z formularza klucza parametru ( atrybut name), opcji (atrybut value)
       const formData = utils.serializeFormToObject(thisProduct.form);
-      console.log('formData', formData);
+      //console.log('formData', formData);
 
 
       /* START LOOP: for each paramId in thisProduct.data.params */
@@ -198,15 +201,94 @@
         }
       }
       /* set the contents of thisProduct.priceElem to be the value of variable price */
+      variablePrice *= thisProduct.amountWidget.value;
       thisProduct.priceElem.innerHTML = variablePrice;
+      console.log('total price:', variablePrice);
+    }
+    initAmountWidget() { /*metoda tworząca instancję dla klasy AmountWidget*/
+      const thisProduct = this;
+
+      thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
+      thisProduct.amountWidgetElem.addEventListener('updated', function () {
+        thisProduct.processOrder();
+      });
     }
   }
+
+  class AmountWidget {
+    constructor(element) {
+      const thisWidget = this;
+
+      thisWidget.value = settings.amountWidget.defaultValue;
+
+      thisWidget.getElements(element);
+      thisWidget.setValue(thisWidget.input.value);
+      thisWidget.initActions();
+
+      console.log('AmountWidget:', thisWidget);
+      console.log('constructor arguments:', element);
+    }
+
+    getElements(element) {
+      const thisWidget = this;
+
+      thisWidget.element = element;
+      thisWidget.input = thisWidget.element.querySelector(select.widgets.amount.input);
+      thisWidget.linkDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease);
+      thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
+    }
+
+    setValue(value) { //metoda zapisująca wartość zapisanego argumentu
+      const thisWidget = this;
+      const newValue = parseInt(value);
+
+      /*TODO: add validation */
+      if (newValue !== thisWidget.value // new Value jest inna niż dotychczasowa
+        && newValue >= settings.amountWidget.defaultMin //newValue jest większa bądź równa amount.Widget.defaultMin
+        && newValue <= settings.amountWidget.defaultMax) { //newValue jest mniejsza bądź równa amountWidget.default
+        thisWidget.value = newValue; //do sprawdzania czy wartość jest poprawna i mieści się w przyjętym zakresie
+        thisWidget.announce();
+      }
+
+      thisWidget.input.value = thisWidget.value; //jeśli wartość jest dopuszczalna to zapisujemy ją w thisWidget.value
+    }
+
+    initActions() {
+
+      const thisWidget = this;
+      //dodanie reakcji na eventy
+      //add EventListener 'change' for thisWidget.input listener
+      thisWidget.input.addEventListener('change', function () {
+        thisWidget.setValue(thisWidget.input.value); //in the handler use setValue method with the argument as above
+      });
+      //add EventListener 'click' for thisWidget.linkDecrease
+      thisWidget.linkDecrease.addEventListener('click', function (event) {
+        event.preventDefault(); // in the handler use prevent Default, setValue method with argument thisWidget.value -1
+        thisWidget.setValue(thisWidget.value - 1);
+      });
+      //add EventListener 'click' for thisWidget.linkIncrease
+      thisWidget.linkIncrease.addEventListener('click', function (event) {
+        event.preventDefault(); //// in the handler use prevent Default, setValue method with argument thisWidget.value +1
+        thisWidget.setValue(thisWidget.value + 1);
+      });
+    }
+
+    // metoda annouce tworzy instance klasy.... 
+    announce() {
+      const thisWidget = this;
+
+      const event = new Event('updated');
+      thisWidget.element.dispatchEvent(event);
+    }
+
+  }
+
 
   const app = { //metoda OBIEKTU
 
     initMenu: function () { // instancja klasy PRODUCT
       const thisApp = this; //this pojedyncza instancja - pozwala na dodawanie właściwości i uruchamianie danej metody
-      console.log('thisApp.data', thisApp.data);
+      //console.log('thisApp.data', thisApp.data);
 
       for (let productData in thisApp.data.products) {
         new Product(productData, thisApp.data.products[productData]);
@@ -221,11 +303,11 @@
 
     init: function () {
       const thisApp = this;
-      console.log('*** App starting ***');
-      console.log('thisApp:', thisApp);
-      console.log('classNames:', classNames);
-      console.log('settings:', settings);
-      console.log('templates:', templates);
+      //console.log('*** App starting ***');
+      //console.log('thisApp:', thisApp);
+      //console.log('classNames:', classNames);
+      //console.log('settings:', settings);
+      //console.log('templates:', templates);
       thisApp.initData();
       thisApp.initMenu();
     },
