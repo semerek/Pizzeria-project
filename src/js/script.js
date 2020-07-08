@@ -331,7 +331,7 @@
       const thisCart = this;
 
       //add EventListener 'click' for thisCart.dom.toggleTrigger
-      thisCart.dom.toggleTrigger.addEventListener('click', function (event) {
+      thisCart.dom.toggleTrigger.addEventListener('click', function () {
         console.log('clicked');
         // toggle thisCart.dom.wrapper saved in classNames.cart.wrapperActive
         thisCart.dom.wrapper.classList.toggle(classNames.menuProduct.wrapperActive);
