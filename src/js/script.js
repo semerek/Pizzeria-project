@@ -174,6 +174,7 @@
       thisProduct.cartButton.addEventListener('click', function (event) {
         event.preventDefault();
         thisProduct.processOrder();
+        thisProduct.addToCart();
       });
 
     }
@@ -182,8 +183,9 @@
       const thisProduct = this;
       //console.log('processOrder: ', thisProduct);
 
+      thisProduct.params = {}; //zapisanie pustego obiektu po co?
       /* set variable price to equal thisProduct.data.price */
-      let variablePrice = thisProduct.data.price;
+      let price = thisProduct.data.price;
       /* define variable params */
       let params = thisProduct.data.params;
 
@@ -204,19 +206,27 @@
           /* START IF: if option is selected and option is not default */
           const optionSelected = formData.hasOwnProperty(paramId) && formData[paramId].indexOf(optionId) > -1;
           if (optionSelected && !option.default) { // opcja wybrana nie jest opcją domyślną
-            variablePrice += option.price; //+=	price = price + option.price
+            price += option.price; //+=	price = price + option.price
 
             /* END IF: if option is selected and option is not default */
             /* START ELSE IF: if option is not selected and option is default */
           } else if (!optionSelected && option.default) { //opcja niewybrana jest opcją domyślną
             /* deduct price of option from price */
-            variablePrice -= option.price; //-=	price = price - option.price //
+            price -= option.price; //-=	price = price - option.price //
             /* END ELSE IF: if option is not selected and option is default */
           }
           /*create const = all found elements in thisProduct.imageWrapper*/
           /*wszystkie obrazki składają się z kropki, klucza parametru, myśnika, klucza opcji.. dlaczego?*/
           const images = thisProduct.imageWrapper.querySelectorAll('.' + [paramId] + '-' + [optionId]);
           if (optionSelected) {
+            if (!thisProduct.params[paramId]) {
+              thisProduct.params[paramId] = {
+                label: param.label,
+                options: {},
+              };
+            }
+            thisProduct.params[paramId].options[optionId] = option.label;
+
             for (let image of images) {
               image.classList.add(classNames.menuProduct.imageVisible);
             } /* END LOOP for each image*/
@@ -226,11 +236,16 @@
             }
           }
         }
+        console.log('thisProduct.params', thisProduct.params);
+
       }
+      /*multiply price by amount*/
+      thisProduct.priceSingle = price;
+      thisProduct.price = thisProduct.priceSingle * thisProduct.amountWidget.value;
       /* set the contents of thisProduct.priceElem to be the value of variable price */
-      variablePrice *= thisProduct.amountWidget.value;
-      thisProduct.priceElem.innerHTML = variablePrice;
+      thisProduct.priceElem.innerHTML = thisProduct.variablePrice;
       //console.log('total price:', variablePrice);
+
     }
     initAmountWidget() { /*metoda tworząca instancję dla klasy AmountWidget*/
       const thisProduct = this;
@@ -239,6 +254,15 @@
       thisProduct.amountWidgetElem.addEventListener('updated', function () {
         thisProduct.processOrder();
       });
+    }
+    addToCart() {
+      const thisProduct = this;
+
+      thisProduct.name = thisProduct.data.name;
+      thisProduct.amount = thisProduct.amountWidget.value;
+      app.cart.add(thisProduct); //przekazywanie instancji ??? co to oznacza?
+
+
     }
   }
 
@@ -325,6 +349,7 @@
       thisCart.dom = {};
       thisCart.dom.wrapper = element;
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
+      thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.cart.productList);
     }
 
     initActions() {
@@ -336,6 +361,17 @@
         // toggle thisCart.dom.wrapper saved in classNames.cart.wrapperActive
         thisCart.dom.wrapper.classList.toggle(classNames.menuProduct.wrapperActive);
       });
+    }
+    add(menuProduct) {
+      const thisCart = this;
+      //console.log('adding product', menuProduct)
+
+      // generate HTML and save it as generatedHTML*/
+      const generatedHTML = templates.cartProduct(menuProduct);
+      // create element DOM 
+      thisCart.element = utils.createDOMFromHTML(generatedHTML);
+      // add element to thisCart.dom.productList. 
+      thisCart.dom.productList.appendChild(thisCart.element);
     }
   }
 
