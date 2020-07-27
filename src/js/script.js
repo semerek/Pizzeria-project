@@ -421,7 +421,7 @@
 
       const index = thisCart.products.indexOf(cartProduct);
 
-      thisCart.products.slice(index, 1);
+      thisCart.products.splice(index, 1);
       cartProduct.dom.wrapper.remove();
       thisCart.update();
 
