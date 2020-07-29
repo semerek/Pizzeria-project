@@ -71,6 +71,11 @@
     cart: {
       defaultDeliveryFee: 20,
     },
+    db: {
+      url: '//localhost:3131',
+      product: 'product',
+      order: 'order',
+    },
   };
 
   const templates = {
@@ -440,8 +445,8 @@
       thisCartProduct.priceSingle = menuProduct.priceSingle;
       thisCartProduct.amount = menuProduct.amount;
       thisCartProduct.params = JSON.parse(JSON.stringify(menuProduct.params));
-      //przekonwertowanie menuProduct.params na string z danymi w formacie JSON
-      //JSON.parse - generowanie nowego obiektu w oparciu o powyższy ciąg znaków
+      /*przekonwertowanie menuProduct.params na string z danymi w formacie JSON */
+      /*JSON.parse - generowanie nowego obiektu w oparciu o powyższy ciąg znaków */
 
       thisCartProduct.getElements(element);
       //przekazywanie instancji ??? co to oznacza?
@@ -509,14 +514,31 @@
       //console.log('thisApp.data', thisApp.data);
 
       for (let productData in thisApp.data.products) {
-        new Product(productData, thisApp.data.products[productData]);
+        new Product(thisApp.data.products[productData].id, thisApp.data.products[productData]);
       }
     },
 
     initData: function () { // INSTANCJA dla każdego PRODUCT
       const thisApp = this;
+      thisApp.data = {};
 
-      thisApp.data = dataSource; //dataSource = informacje o produkcie
+      const url = settings.db.url + '/' + settings.db.product;
+
+      //thisApp.data = dataSource; //dataSource = informacje o produkcie
+
+      fetch(url)
+        .then(function (rawResponse) {
+          return rawResponse.json();
+        })
+        .then(function (parsedResponse) {
+          console.log('parsedResponse', parsedResponse);
+          /* save parsedResponse as thisApp.data.products */
+          thisApp.data.products = parsedResponse;
+          /* execute initMenu method */
+          thisApp.initMenu();
+
+        });
+      console.log('thisApp.data', JSON.stringify(thisApp.data));
     },
 
     initCart: function () {
@@ -533,9 +555,10 @@
       //console.log('classNames:', classNames);
       //console.log('settings:', settings);
       //console.log('templates:', templates);
+      thisApp.data = {};
+      thisApp.initCart();
       thisApp.initData();
       thisApp.initMenu();
-      thisApp.initCart();
     },
   };
 
