@@ -385,9 +385,9 @@
         thisCart.remove(event.detail.cartProduct);
       });
       thisCart.dom.form.addEventListener('submit', function (event) {
-        thisCart.preventDefault;
+        event.preventDefault;
         thisCart.sendOrder();
-      })
+      });
 
     }
 
@@ -402,14 +402,12 @@
         subtotalPrice: thisCart.subtotalPrice,
         totalPrice: thisCart.totalPrice,
         deliveryFee: thisCart.deliveryFee,
-        products: {},
+        products: [],
 
       };
 
-      for (products in thisCart.products) {
-        thisCart.getdata();
-        payload.products = productData.getData();
-
+      for (const products of thisCart.products) {
+        payload.products.push(products.getData());
       }
 
 
@@ -560,10 +558,10 @@
         amount: thisCartProduct.amount,
         price: thisCartProduct.price,
         priceSingle: thisCartProduct.priceSingle,
-        params: thisCartProduct.params,
+        params: thisCartProduct.params
 
       };
-      return productData
+      return productData;
     }
   }
 
