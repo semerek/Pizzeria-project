@@ -385,7 +385,7 @@
         thisCart.remove(event.detail.cartProduct);
       });
       thisCart.dom.form.addEventListener('submit', function (event) {
-        event.preventDefault;
+        event.preventDefault();
         thisCart.sendOrder();
       });
 
@@ -396,8 +396,8 @@
       const url = settings.db.url + '/' + settings.db.order;
 
       const payload = {
-        address: thisCart.dom.address,
-        phone: thisCart.dom.phone,
+        address: thisCart.dom.address.value,
+        phone: thisCart.dom.phone.value,
         totalNumber: thisCart.totalNumber,
         subtotalPrice: thisCart.subtotalPrice,
         totalPrice: thisCart.totalPrice,
