@@ -1,5 +1,5 @@
 import { select, classNames, templates } from '../settings.js';
-import utils from '../utils.js';
+import { utils } from '../utils.js';
 import AmountWidget from './AmountWidget.js';
 
 class Product { // stworzenie KLASY o nazwie PRODUCT
@@ -187,7 +187,7 @@ class Product { // stworzenie KLASY o nazwie PRODUCT
     //app.cart.add(thisProduct); //przekazywanie instancji ??? co to oznacza?
 
     const event = new CustomEvent('add-to-cart', {
-      bubble: true,
+      bubbles: true,
       detail: {
         product: thisProduct,
       },
