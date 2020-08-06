@@ -3,32 +3,32 @@ import AmountWidget from './AmountWidget.js';
 
 
 class Booking {
-    constructor(booking) {
-        const thisBooking = this;
+  constructor(booking) {
+    const thisBooking = this;
 
-        thisBooking.render(booking);
-        thisBooking.initWidgets();
+    thisBooking.render(booking);
+    thisBooking.initWidgets();
 
-    }
-    render(element) {
-        const thisBooking = this;
+  }
+  render(element) {
+    const thisBooking = this;
 
-        const generatedHTML = templates.bookingWidget();
-        thisBooking.dom = {};
-        thisBooking.dom.wrapper = element;
-        thisBooking.dom.wrapper.innerHTML = generatedHTML;
+    const generatedHTML = templates.bookingWidget();
+    thisBooking.dom = {};
+    thisBooking.dom.wrapper = element;
+    thisBooking.dom.wrapper.innerHTML = generatedHTML;
 
-        thisBooking.dom.peopleAmount = document.querySelector(select.booking.peopleAmount);
-        thisBooking.dom.hoursAmount = document.querySelector(select.booking.hoursAmount);
-    }
+    thisBooking.dom.peopleAmount = document.querySelector(select.booking.peopleAmount);
+    thisBooking.dom.hoursAmount = document.querySelector(select.booking.hoursAmount);
+  }
 
-    initWidgets() {
-        const thisBooking = this;
+  initWidgets() {
+    const thisBooking = this;
 
-        thisBooking.peopleAmount = new AmountWidget(thisBooking.dom.peopleAmount);
-        thisBooking.hoursAmount = new AmountWidget(thisBooking.dom.hoursAmount);
+    thisBooking.peopleAmount = new AmountWidget(thisBooking.dom.peopleAmount);
+    thisBooking.hoursAmount = new AmountWidget(thisBooking.dom.hoursAmount);
 
-    }
+  }
 
 
 }
