@@ -3,10 +3,10 @@ import AmountWidget from './AmountWidget.js';
 
 
 class Booking {
-  constructor(booking) {
+  constructor(element) {
     const thisBooking = this;
 
-    thisBooking.render(booking);
+    thisBooking.render(element);
     thisBooking.initWidgets();
 
   }
