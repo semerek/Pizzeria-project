@@ -49,12 +49,12 @@ class AmountWidget extends BaseWidget {
     //add EventListener 'click' for thisWidget.linkDecrease
     thisWidget.dom.linkDecrease.addEventListener('click', function (event) {
       event.preventDefault(); // in the handler use prevent Default, setValue method with argument thisWidget.value -1
-      thisWidget.setValue(thisWidget.value - 1);
+      thisWidget.value = thisWidget.value - 1;
     });
     //add EventListener 'click' for thisWidget.linkIncrease
     thisWidget.dom.linkIncrease.addEventListener('click', function (event) {
       event.preventDefault(); //// in the handler use prevent Default, setValue method with argument thisWidget.value +1
-      thisWidget.setValue(thisWidget.value + 1);
+      thisWidget.value = thisWidget.value + 1;
     });
   }
 
