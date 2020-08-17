@@ -1,5 +1,5 @@
 import { select, templates, settings, classNames } from '../settings.js';
-import { utils } from '../utils.js'
+import { utils } from '../utils.js';
 import AmountWidget from './AmountWidget.js';
 import DatePicker from './DatePicker.js';
 import HourPicker from './HourPicker.js';
@@ -83,15 +83,19 @@ class Booking {
     thisBooking.booked = {};
 
     for (let item of eventsCurrent) {
-      thisBooking.makeBooked(item.date, item.date, item.duration, item.table)
+      thisBooking.makeBooked(item.date, item.date, item.duration, item.table);
     }
+    
+    const minDate = thisBooking.datePicker.minDate;
+    const maxDate = thisBooking.datePicker.maxDate;
+
     for (let item of bookings) {
-      thisBooking.makeBooked(item.date, item.date, item.duration, item.table)
+      thisBooking.makeBooked(item.date, item.date, item.duration, item.table);
     }
     for (let item of eventsRepeat) {
       if (item.repeat == 'daily') {
         for (let loopDate = minDate; loopDate <= maxDate; loopDate = utils.addDays(loopDate, 1)) {
-          thisBooking.makeBooked(utils.datetoStritem.date(loopDate), item.duration, item.table)
+          thisBooking.makeBooked(utils.datetoStritem.date(loopDate), item.duration, item.table);
         }
       }
     }
@@ -103,7 +107,7 @@ class Booking {
     const thisBooking = this;
 
 
-    if (typeof thisBooking.booked[date] == 'underfined') {
+    if (typeof thisBooking.booked[date] == 'undefined') {
       thisBooking.booked[date] = {};
     }
 
@@ -111,7 +115,7 @@ class Booking {
 
     for (let hourBlock = startHour; hourBlock < startHour + duration; hourBlock += 0, 5) {
       //console.log('loop', hourBlock);
-      if (typeof thisBooking.booked[date] == 'underfined') {
+      if (typeof thisBooking.booked[date] == 'undefined') {
         thisBooking.booked[date][hourBlock] = [];
       }
 
@@ -129,15 +133,15 @@ class Booking {
     let allAvailable = false;
 
     if (
-      typeof thisBooking.booked[thisBooking.date] == 'underfined'
+      typeof thisBooking.booked[thisBooking.date] == 'undefined'
       ||
-      typeof thisBooking.booked[thisBooking.date][thisBooking.hour] == 'underfined'
+      typeof thisBooking.booked[thisBooking.date][thisBooking.hour] == 'undefined'
     ) {
       allAvailable = true;
     }
 
     for (let table of thisBooking.dom.tables) {
-      let tableId = table.getAttribute(setting.booking.tableIdAttribute);
+      let tableId = table.getAttribute(settings.booking.tableIdAttribute);
       if (!isNaN(tableId)) {
         tableId = parseInt(tableId);
       }
@@ -164,6 +168,7 @@ class Booking {
     thisBooking.dom.peopleAmount = document.querySelector(select.booking.peopleAmount);
     thisBooking.dom.hoursAmount = document.querySelector(select.booking.hoursAmount);
     thisBooking.dom.datePicker = document.querySelector(select.widgets.datePicker.wrapper);
+    thisBooking.dom.hourPicker = document.querySelector(select.widgets.hourPicker.wrapper);
     thisBooking.dom.tables = thisBooking.dom.wrapper.querySelectorAll(select.booking.tables);
   }
 
