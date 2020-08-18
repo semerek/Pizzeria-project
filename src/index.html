@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,10 +8,19 @@
   <title>Pizzeria</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <link rel="stylesheet" href="vendor/range-slider.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Lato:400,300i,700%7COswald:300,500,700&amp;subset=latin-ext" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,300i,700%7COswald:300,500,700&amp;subset=latin-ext"
+    rel="stylesheet">
   <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/glide.core.min.css">
+  <link rel="stylesheet" href="css/glide.core.theme.min.css">
+
+
+
+
+
 </head>
+
 <body>
 
   <header class="header">
@@ -20,10 +30,7 @@
           <h1 class="logo__title"><span>Mamma</span>Mia!</h1>
           <h2 class="logo__subtitle">the best homemade Italian food</h2>
         </div>
-        <div class="main-nav">
-          <a href="#order">Order</a>
-          <a href="#booking">Booking</a>
-        </div>
+
         <div id="cart" class="cart">
           <div class="cart__summary">
             <span class="cart__total-number">5</span>
@@ -61,13 +68,115 @@
     </div>
   </header>
 
+  <script id="template-main-page" type="text/x-handlebars-template">
   <div id="pages">
-    <section id="order">
-      <div id="product-list" class="product-list container"></div>
+    <section id="main-page">
+      <div class="main-page-container">
+        <div class="main-nav">
+          <a href="#order" id="nav-order">Order online</a>
+          <a href="#booking" id="nav-book">Book table</a>
+        </div>
+        <div class="opening-hours">
+          <p>opening Hours</p><br>
+          <p>Tue-Sun 12pm - 12am</p>
+        </div>
+        <div class="carousel-container">
+          <div class="glide">
+            <div class="glide__track" data-glide-el="track">
+              <ul class="glide__slides">
+                <li class="glide__slide">
+                  <div class="corousel-picture">
+                    <img src="./images/pizza-1.jpg" alt="">
+                  </div>
+                  <div class="carousel-qoute">
+                    <h1>AMAZING SERVICE</h1>
+                    <p>"We don't want to push our ideas on to customers, we simply want to make what they want." </p>
+                    <p>Laura Ashley</p>
+                  </div>
+                </li>
+                <li class="glide__slide">
+                  <div class="corousel-picture">
+                    <img src="./images/pizza-2.jpg" alt="">
+                  </div>
+                  <div class="carousel-qoute">
+                    <h1>DELICIOUS PIZZA</h1>
+                    <p>“Anyone who says that money cannot buy happiness has clearly never spent their money on pizza.” </p>
+                    <p>Andrew W.K.</p>
+                  </div>
+                </li>
+                <li class="glide__slide">
+                  <div class="corousel-picture">
+                    <img src="./images/pizza-3.jpg" alt="">
+                  </div>
+                  <div class="carousel-qoute">
+                    <h1>GREAT ITALIAN EXPIERIENCE</h1>
+                    <p>"“When life gives you twists and turns, chique yourself up in Italy!” </p>
+                    <p>Barbara Conelli</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="glide__arrows" data-glide-el="controls">
+              <button class="glide__arrow glide__arrow--left" data-glide-dir="<">prev</button>
+              <button class="glide__arrow glide__arrow--right" data-glide-dir=">">next</button>
+            </div>
+          </div>
+        </div>
+      
+        <div class="gallery">
+          <div class="gallery-pic">
+            <img src="./images/pizza-4.jpg" alt="">
+            <a href="#"><i class="fas fa-share-alt"></i></a>
+            <a href="#"><i class="fas fa-heart"></i></a>
+          </div>
+  
+          <div class="gallery-pic">
+            <img src="./images/pizza-5.jpg" alt="">
+            <a href="#"><i class="fas fa-share-alt"></i></a>
+            <a href="#"><i class="fas fa-heart"></i></a>
+          </div>
+  
+          <div class="gallery-pic">
+            <img src="./images/pizza-6.jpg" alt="">
+            <a href="#"><i class="fas fa-share-alt"></i></a>
+            <a href="#"><i class="fas fa-heart"></i></a>
+          </div>
+  
+          <div class="gallery-pic">
+            <img src="./images/pizza-7.jpg" alt="">
+            <a href="#"><i class="fas fa-share-alt"></i></a>
+            <a href="#"><i class="fas fa-heart"></i></a>
+          </div>     
+  
+          <div class="gallery-pic">
+            <img src="./images/pizza-8.jpg" alt="">
+            <a href="#"><i class="fas fa-share-alt"></i></a>
+            <a href="#"><i class="fas fa-heart"></i></a>
+          </div>
+  
+          <div class="gallery-pic">
+            <img src="./images/pizza-9.jpg" alt="">
+            <a href="#"><i class="fas fa-share-alt"></i></a>
+            <a href="#"><i class="fas fa-heart"></i></a>
+          </div>
+        </div>
+        <footer>
+          <div class="footer-container">
+            <a href="#" class="footer">View more on Instagram</a>
+          </div>
+        </footer>
+      </div>
+    
     </section>
-    <section id="booking">
-      <div class="booking-wrapper container"></div>
-    </section>
+    </script>
+
+
+  <section id="order">
+    <div id="product-list" class="product-list container"></div>
+  </section>
+  <section id="booking">
+    <div class="booking-wrapper container"></div>
+  </section>
   </div>
 
   <script id="template-booking-widget" type="text/x-handlebars-template">
@@ -247,5 +356,16 @@
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="vendor/range-slider.min.js"></script>
   <script src="js/app.js" type="module"></script>
+  <script> src = "https://cdn.jsdelivr.net/npm/@glidejs/glide"</script>
+  <script>
+    const config = {
+      type: "carousel",
+      perView: 1
+    };
+    new Glide(".glide", config).mount({
+      Autoplay: 3000;
+    })
+  </script>
 </body>
+
 </html>
