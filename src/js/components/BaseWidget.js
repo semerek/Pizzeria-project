@@ -52,7 +52,7 @@ class BaseWidget {
   renderValue() {
     const thisWidget = this;
 
-    thisWidget.dom.wraper.innerHTML = thisWidget.correctalue;
+    thisWidget.dom.wraper.innerHTML = thisWidget.correctValue;
   }
   announce() {
     const thisWidget = this;
