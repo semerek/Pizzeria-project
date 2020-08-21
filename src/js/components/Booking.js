@@ -28,12 +28,12 @@ class Booking {
         startDateParam,
         endDateParam,
       ],
-      eventCurrent: [
+      eventsCurrent: [
         settings.db.notRepeatParam,
         startDateParam,
         endDateParam,
       ],
-      eventRepaet: [
+      eventsRepeat: [
         settings.db.repeatParam,
         endDateParam,
       ],
@@ -42,15 +42,12 @@ class Booking {
     //console.log('getData params', params);
 
     const urls = {
-      booking: settings.db.url + '/' + settings.db.booking
-        + '?' + params.booking,
-      eventsCurrent: settings.db.url + '/' + settings.db.event
-        + '?' + params.eventsCurrent,
-      eventsRepeat: settings.db.url + '/' + settings.db.event
-        + '?' + params.eventsRepeat,
+      booking:        settings.db.url + '/' + settings.db.booking + '?' + params.booking.join('&'),
+      eventsCurrent:  settings.db.url + '/' + settings.db.event + '?' + params.eventsCurrent.join('&'),
+      eventsRepeat:   settings.db.url + '/' + settings.db.event+ '?' + params.eventsRepeat.join('&'),
     };
 
-    // console.log('getData urls', urls);
+    //console.log('getData urls', urls);
 
     Promise.all([
       fetch(urls.booking),
@@ -213,18 +210,16 @@ class Booking {
 
         if (table.classList.contains(classNames.booking.tableBooked)) {
           alert('Sorry, this table is already reserved :(');
-        } else if (!table.classList.contains(classNames.booking.tableBooked)) {
-          table.classList.add(classNames.booking.tableSelected);
-          thisBooking.tableSelected = tableId;
-          alert('You just reserved the table :)');
-
         } else {
           for (let table of thisBooking.dom.tables) {
             table.classList.remove(classNames.booking.tableSelected);
           }
         }
+       
         table.classList.add(classNames.booking.tableSelected);
         thisBooking.tableSelected = tableId;
+        alert('You just reserved the table :)');
+
       });
     }
 
