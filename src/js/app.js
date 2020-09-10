@@ -1,9 +1,9 @@
 
-
 import { settings, select, classNames } from './settings.js';
 import Product from './components/Product.js';
 import Cart from './components/Cart.js';
 import Booking from './components/Booking.js';
+import Home from './components/Home.js';
 
 const app = { //metoda OBIEKTU
 
@@ -12,6 +12,8 @@ const app = { //metoda OBIEKTU
 
     thisApp.pages = document.querySelector(select.containerOf.pages).children;
     thisApp.navLinks = document.querySelectorAll(select.nav.links);
+    thisApp.navOrder = document.querySelectorAll(select.nav.order);
+    thisApp.navBooking = document.querySelectorAll(select.nav.booking);
 
     const idFromHash = window.location.hash.replace('#/', '');
 
@@ -37,9 +39,6 @@ const app = { //metoda OBIEKTU
         /* run thisApp.activatePage with that id */
         thisApp.activePage(id);
 
-        /* change URL hash*/
-        window.location.hash = '#/' + id;
-
       });
     }
   },
@@ -57,9 +56,23 @@ const app = { //metoda OBIEKTU
       link.classList.toggle(
         classNames.nav.active,
         link.getAttribute('href') == '#' + pageId
-      );
+      );  
+    }
+    if (pageId === 'mainpage') {
+      document.querySelector('.main-nav').classList.add('hide');
+    } else {
+      document.querySelector('.main-nav').classList.remove('hide');
     }
 
+    window.location.hash = '#/' + pageId;
+
+  },
+
+  initHomePage: function () {
+    const thisApp = this;
+
+    thisApp.homeContainer = document.querySelector(select.containerOf.home);
+    thisApp.mainPage = new Home (thisApp.homeContainer); 
   },
 
   initMenu: function () { // instancja klasy PRODUCT
@@ -129,6 +142,8 @@ const app = { //metoda OBIEKTU
     thisApp.initData();
     thisApp.initMenu();
     thisApp.initBooking();
+    thisApp.initHomePage();
+
   },
 
 };
