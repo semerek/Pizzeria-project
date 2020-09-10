@@ -154,6 +154,7 @@ class Booking {
         table.classList.remove(classNames.booking.tableBooked);
       }
     }
+    thisBooking.removeSelected();
   }
   render(element) {
     const thisBooking = this;
@@ -162,7 +163,6 @@ class Booking {
     thisBooking.dom = {};
     thisBooking.dom.wrapper = element;
     thisBooking.dom.wrapper.innerHTML = generatedHTML;
-
 
     thisBooking.dom.peopleAmount = document.querySelector(select.booking.peopleAmount);
     thisBooking.dom.hoursAmount = document.querySelector(select.booking.hoursAmount);
@@ -187,7 +187,11 @@ class Booking {
     thisBooking.datePicker = new DatePicker(thisBooking.dom.datePicker);
     thisBooking.hourPicker = new HourPicker(thisBooking.dom.hourPicker);
 
-    thisBooking.dom.wrapper.addEventListener('updated', function () {
+    thisBooking.dom.datePicker.addEventListener('updated', function () {
+      thisBooking.updateDOM();
+    });
+    thisBooking.dom.hourPicker .addEventListener('updated', function () {
+      thisBooking.updateDOM();
     });
     thisBooking.dom.form.addEventListener('submit', function (event) {
       event.preventDefault();
@@ -211,17 +215,24 @@ class Booking {
         if (table.classList.contains(classNames.booking.tableBooked)) {
           alert('Sorry, this table is already reserved :(');
         } else {
-          for (let table of thisBooking.dom.tables) {
-            table.classList.remove(classNames.booking.tableSelected);
-          }
+          thisBooking.removeSelected();
+          table.classList.add(classNames.booking.tableSelected);
+          thisBooking.tableSelected = tableId;
+
         }
-       
-        table.classList.add(classNames.booking.tableSelected);
-        thisBooking.tableSelected = tableId;
-        alert('You just reserved the table :)');
 
       });
     }
+
+  }
+
+  removeSelected(){ 
+
+    const thisBooking= this;
+    for (let table of thisBooking.dom.tables) {
+      table.classList.remove(classNames.booking.tableSelected);
+    } 
+    thisBooking.tableSelected = null; 
 
   }
 
@@ -232,19 +243,19 @@ class Booking {
       date: thisBooking.datePicker.value,
       hour: utils.numberToHour(thisBooking.hour),
       table: thisBooking.tableSelected,
-      people: thisBooking.dom.peopleAmount.value,
-      duration: thisBooking.dom.hoursAmount.value,
+      people: thisBooking.peopleAmount.value,
+      duration: thisBooking.hoursAmount.value,
       address: thisBooking.dom.address.value,
       phone: thisBooking.dom.phone.value,
       starters: [],
     };
 
     for (let starter of thisBooking.dom.starters) {
-      payload.starters.push(starter.value);
-    }
-
-    const options = {
-      method: 'POST',
+      payload.starters.push (starter.value);
+    } 
+ 
+    const options = { 
+      method: 'POST', 
       headers: {
         'Content-type': 'application/json',
       },
@@ -252,10 +263,12 @@ class Booking {
     };
 
     fetch(url, options)
-      .then(function (resonse) {
-        return resonse.json();
+      .then(function (response) {
+        return response.json();
       }).then(function (parsedResponse) {
-        console.log('parsedResponse: ', parsedResponse);
+        //console.log('parsedResponse: ', parsedResponse);
+        thisBooking.makeBooked(parsedResponse.date, parsedResponse.hour, parsedResponse.duration. parsedResponse.table);
+        thisBooking.updateDOM();
       });
 
   }
