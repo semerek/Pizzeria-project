@@ -1,28 +1,24 @@
-import {select, classNames } from '../settings.js';
-//import { utils } from '../utils.js';
+import { select, classNames, templates } from '../settings.js';
+import { utils } from '../utils.js';
 
 class Home {
-  constructor(data) {
+  constructor(container) {
 
     const thisHome = this;
-    thisHome.data = data;
+    thisHome.dom = container;
 
-    // thisHome.renderHome();
+    thisHome.renderHome();
     thisHome.activateLinks();
 
   }
-  
-  /*
 
-  renderHome(){
-  const thisHome = this;
-  const generatedHTML = templates.homePage(thisHome.data);
-  thisHome.element = utils.createDOMFromHTML(generatedHTML);
-  const homeContainer = document.querySelector(select.containerOf.home)
-  homeContainer.appendChild(thisHome.element);
+  renderHome() {
+    const thisHome = this;
+    const generatedHTML = templates.homePage(thisHome.data);
+    thisHome.element = utils.createDOMFromHTML(generatedHTML);
+    thisHome.dom.appendChild(thisHome.element);
   }
 
-*/
   activateLinks() {
 
 
@@ -44,9 +40,9 @@ class Home {
     const bookLink = document.getElementById('book-id');
     const bookLinkId = bookLink.getAttribute('href').replace('#', '');
 
-    bookLink.addEventListener('click', function(){
-      for(let page of pages) {
-        if(page.id == bookLinkId) {
+    bookLink.addEventListener('click', function () {
+      for (let page of pages) {
+        if (page.id == bookLinkId) {
           page.classList.add(classNames.pages.active);
         } else {
           page.classList.remove(classNames.pages.active);
@@ -56,4 +52,4 @@ class Home {
   }
 }
 
-export default Home; 
+export default Home;

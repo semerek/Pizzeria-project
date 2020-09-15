@@ -72,7 +72,7 @@ const app = { //metoda OBIEKTU
     const thisApp = this;
 
     thisApp.homeContainer = document.querySelector(select.containerOf.home);
-    thisApp.mainPage = new Home (thisApp.homeContainer); 
+    thisApp.mainPage = new Home(thisApp.homeContainer); 
   },
 
   initMenu: function () { // instancja klasy PRODUCT
