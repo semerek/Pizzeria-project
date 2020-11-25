@@ -16,6 +16,43 @@ class Booking {
 
 
   }
+  
+  changeColors() {
+    const thisBooking = this;
+
+    const sliderLayer = document.createElement('div');
+    sliderLayer.className = 'slider-color';
+    const rangeSlider = document.querySelector('.rangeSlider');
+    rangeSlider.removeChild(rangeSlider.childNodes[0]);
+
+
+    for(let hour = 12; hour < 25; hour += .5) {
+
+      const div = document.createElement('div');
+
+      if(thisBooking.booked[thisBooking.date] && thisBooking.booked[thisBooking.date][hour]) {
+        div.className = 'available reserved' + thisBooking.booked[thisBooking.date][hour].length;
+      } else {
+        div.className = 'available';
+      }
+      sliderLayer.appendChild(div);
+    }
+    rangeSlider.prepend(sliderLayer);
+
+
+  }
+
+
+
+  submitAction(){
+    const thisBooking = this;
+
+    thisBooking.dom.form.addEventListener('submit', function(event){
+
+      event.preventDefault();
+      thisBooking.sendBooking();
+    });
+  }
   getData() {
     const thisBooking = this;
 
@@ -155,6 +192,8 @@ class Booking {
       }
     }
     thisBooking.removeSelected();
+    thisBooking.changeColors();
+
   }
   render(element) {
     const thisBooking = this;

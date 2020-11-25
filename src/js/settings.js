@@ -71,6 +71,7 @@ export const select = {
     form: '.booking-form',
     orderSubmit: 'order-confirmation [type="submit"]',
     starters: '.booking-form [type="checkbox"]',
+    rangeSlider: '.rangeSlider',
   },
   nav: {
     links: '.main-nav a',
@@ -91,6 +92,9 @@ export const classNames = {
     loading: 'loading',
     tableBooked: 'booked',
     tableSelected: 'selected',
+    rangeSliderGreen: 'rangeSlider__green',
+    rangeSliderOrange: 'rangeSlider__orange',
+    rangeSliderRed: 'rangeSlider__red',
   },
   nav: {
     active: 'active',
