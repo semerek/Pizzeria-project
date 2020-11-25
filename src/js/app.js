@@ -38,6 +38,7 @@ const app = { //metoda OBIEKTU
         
         /* run thisApp.activatePage with that id */
         thisApp.activePage(id);
+        
 
       });
     }

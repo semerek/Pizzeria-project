@@ -44,7 +44,7 @@ class Booking {
     const urls = {
       booking:        settings.db.url + '/' + settings.db.booking + '?' + params.booking.join('&'),
       eventsCurrent:  settings.db.url + '/' + settings.db.event + '?' + params.eventsCurrent.join('&'),
-      eventsRepeat:   settings.db.url + '/' + settings.db.event+ '?' + params.eventsRepeat.join('&'),
+      eventsRepeat:   settings.db.url + '/' + settings.db.event + '?' + params.eventsRepeat.join('&'),
     };
 
     //console.log('getData urls', urls);
@@ -174,9 +174,6 @@ class Booking {
     thisBooking.dom.form = thisBooking.dom.wrapper.querySelector(select.booking.form);
     thisBooking.dom.starters = thisBooking.dom.wrapper.querySelectorAll(select.booking.starters);
 
-
-
-
   }
 
   initWidgets() {
@@ -218,8 +215,8 @@ class Booking {
           thisBooking.removeSelected();
           table.classList.add(classNames.booking.tableSelected);
           thisBooking.tableSelected = tableId;
-
         }
+        
 
       });
     }
@@ -267,7 +264,7 @@ class Booking {
         return response.json();
       }).then(function (parsedResponse) {
         //console.log('parsedResponse: ', parsedResponse);
-        thisBooking.makeBooked(parsedResponse.date, parsedResponse.hour, parsedResponse.duration. parsedResponse.table);
+        thisBooking.makeBooked(parsedResponse.date, parsedResponse.hour, parsedResponse.duration, parsedResponse.table);
         thisBooking.updateDOM();
       });
 
