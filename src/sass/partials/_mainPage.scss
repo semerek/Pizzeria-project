@@ -34,6 +34,7 @@
 
 .home-wrapper {
   margin:  auto;
+  padding: ($base-size * 6) ($base-size * 4);
   border-radius: $radius;
 }
 
@@ -249,3 +250,6 @@
 .footer {
   text-align: center; 
 } 
+
+
+
